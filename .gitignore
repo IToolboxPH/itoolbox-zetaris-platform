@@ -1,0 +1,13 @@
+# ── Secrets — never commit ───────────────────────────────────────────────────
+# .env holds the Zetaris admin password. .env.example and .env.server.example are
+# the committed templates.
+.env
+.env.*
+!.env.example
+!.env.server.example
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp

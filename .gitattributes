@@ -1,0 +1,7 @@
+# Everything here runs inside Linux containers or Bash, so text files keep LF line
+# endings on every checkout, including Windows with core.autocrlf=true. A CRLF in
+# init/*.sh breaks the first start with "$'\r': command not found".
+* text=auto eol=lf
+
+*.jar binary
+*.png binary
