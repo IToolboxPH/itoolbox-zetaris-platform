@@ -77,6 +77,13 @@ there, and registered here one Postgres schema per data source, through a read-o
 database role. Each registration is recorded under `datasources/`, without
 passwords, so the setup can be rebuilt.
 
+| Source | What | From |
+| --- | --- | --- |
+| `WEATHER` | Current weather, 5-day/3-hour forecast and air quality for 24 Philippine cities, loaded hourly from OpenWeather | itoolbox-data-platform, schema `weather` |
+
+[datasources/itoolbox-data-platform.sql](datasources/itoolbox-data-platform.sql) records
+the registration.
+
 ## How itoolbox-backend connects
 
 itoolbox-backend calls this harness's API, at `http://host.docker.internal:8888`
