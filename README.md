@@ -1,4 +1,4 @@
-# itoolbox-zetaris-data-harness
+# itoolbox-zetaris-platform
 
 **The data harness for the IToolbox Ecosystem Platform: Zetaris, run locally.**
 
@@ -13,7 +13,8 @@ bundle (release 2.4.3.1, hackathon build) as IToolbox runs it.
 | --- | --- |
 | `itoolbox-backend` | FastAPI service and the agent; calls this harness's API on :8888 |
 | `itoolbox-frontend` | Next.js web app |
-| **itoolbox-zetaris-data-harness** (this) | Zetaris: query engine, catalog, API |
+| **itoolbox-zetaris-platform** (this) | Zetaris: query engine, catalog, API |
+| `itoolbox-data-platform` | TimescaleDB and JupyterLab for analysis |
 
 The bundle's own documentation is in [ZETARIS.md](ZETARIS.md): sizing, tuning the
 query engine, JDBC, and what to do when something fails.
@@ -54,6 +55,14 @@ stored data source credential.
   plain HTTP the UI only works at localhost anyway.
 - **`.env` is not committed.** It holds the admin password; `.env.example` is the
   same file without it.
+- **Compose project `itoolbox_zetaris-platform`**, so Docker Desktop lists it with
+  the other IToolbox stacks (`itoolbox_backend`, `itoolbox_frontend`,
+  `itoolbox_data-platform`). The stock `name: zetaris` also named the containers
+  and volumes, so those are pinned in `docker-compose.yml` instead: containers
+  `zetaris-postgres`, `zetaris-driver`, `zetaris-api`, `zetaris-ui`,
+  `zetaris-init`, `zetaris-bootstrap`, and volumes `zetaris_pgdata`,
+  `zetaris_driver-data` and the rest, the names an install from the stock bundle
+  already has.
 - **LF line endings, enforced by `.gitattributes`.** The scripts in `init/` run
   inside Linux containers, and a Windows checkout with CRLF breaks the first start
   with `$'\r': command not found`.

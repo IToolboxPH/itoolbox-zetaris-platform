@@ -11,7 +11,12 @@
 # a release runs. The `:-` defaults below are a fallback for older .env files, not the source
 # of truth, and two are moving tags -- do not read a version off this file.
 
-name: zetaris
+# name: Docker Desktop lists the IToolbox stacks together by the "itoolbox_" prefix:
+# itoolbox_frontend, itoolbox_data-platform, itoolbox_zetaris-platform and itoolbox_backend.
+# The stock bundle's `name: zetaris` also named the containers and volumes, so those are
+# pinned below instead: an existing install keeps its metastore and keypair (preflight.sh
+# checks for zetaris_pgdata).
+name: itoolbox_zetaris-platform
 
 services:
 
@@ -23,6 +28,7 @@ services:
   # first-boot action.
   postgres:
     image: postgres:16-alpine
+    container_name: zetaris-postgres
     restart: unless-stopped
     # Postgres holds the metastore and audit log. Stock shared_buffers is 128MB, which is
     # the first thing to limit a large host. These are conservative fractions -- roughly 25%
@@ -67,6 +73,7 @@ services:
   # claims it.
   init:
     image: ${DRIVER_IMAGE:?set DRIVER_IMAGE in .env}
+    container_name: zetaris-init
     # Our images are built for amd64 only. Declaring it silences compose's
     # "does not match the detected host platform ... and no specific platform
     # was requested" warning, which fired on every Apple Silicon start and
@@ -88,6 +95,7 @@ services:
   # Lightning driver: Thrift server on 10000, Spark UI on 4040.
   driver:
     image: ${DRIVER_IMAGE}
+    container_name: zetaris-driver
     platform: linux/amd64
     restart: unless-stopped
     depends_on:
@@ -161,6 +169,7 @@ services:
   # write the shared data tree while the keys stay group-restricted.
   api:
     image: ${API_IMAGE:?set API_IMAGE in .env}
+    container_name: zetaris-api
     platform: linux/amd64
     restart: unless-stopped
     depends_on:
@@ -223,6 +232,7 @@ services:
   # the app appends :8888 for the public API and :8889 for the internal login route.
   ui:
     image: ${UI_IMAGE:?set UI_IMAGE in .env}
+    container_name: zetaris-ui
     platform: linux/amd64
     restart: unless-stopped
     depends_on:
@@ -253,6 +263,7 @@ services:
   # One-shot: the sample data, registered as the administrator.
   bootstrap:
     image: ${DRIVER_IMAGE}
+    container_name: zetaris-bootstrap
     platform: linux/amd64
     restart: "no"
     depends_on:
@@ -284,6 +295,7 @@ services:
   # address needs this; a laptop reached at localhost does not.
   caddy:
     image: caddy:2-alpine
+    container_name: zetaris-caddy
     profiles: ["tls"]
     restart: unless-stopped
     depends_on:
@@ -302,10 +314,19 @@ services:
       - caddy-data:/data
       - caddy-config:/config
 
+# Named as they were under the stock bundle's `name: zetaris`, so an existing install's
+# metastore, keypair and logs carry over. On such an install Compose warns that each
+# "was created for project zetaris"; that is expected.
 volumes:
   pgdata:
+    name: zetaris_pgdata
   caddy-data:
+    name: zetaris_caddy-data
   caddy-config:
+    name: zetaris_caddy-config
   driver-logs:
+    name: zetaris_driver-logs
   customer-data:
+    name: zetaris_customer-data
   driver-data:
+    name: zetaris_driver-data

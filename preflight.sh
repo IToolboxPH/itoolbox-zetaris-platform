@@ -173,7 +173,7 @@ else
 fi
 
 # --- leftover volumes ---------------------------------------------------------------------
-# docker-compose.yml pins `name: zetaris`, so a second install on the same machine adopts the
+# docker-compose.yml pins the volume names (zetaris_pgdata, ...), so a second install on the same machine adopts the
 # volumes of the first. That is usually what you want -- until the earlier one was created
 # with a different POSTGRES_PASSWORD, because Postgres only applies that password when it
 # initialises an empty data directory. The stack then fails deep inside the query engine with
