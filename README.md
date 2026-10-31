@@ -49,8 +49,11 @@ stored data source credential.
 
 ## Changes from the stock bundle
 
-- **UI on port 3001**, not 3000, which nm-web already uses on the machine this
-  runs on. `UI_PORT`, `ALLOWED_ORIGINS` and `GUI_URL` in `.env` must agree.
+- **UI on port 3001**, not 3000, which another app on the host already uses.
+  `UI_PORT`, `ALLOWED_ORIGINS` and `GUI_URL` in `.env` must agree.
+- **No sample data.** The bootstrap job registers the bundle's `NY_TAXI` and
+  `TPCDS_DB` samples only when `ZETARIS_SEED_SAMPLE_DATA=true` in `.env`; IToolbox
+  leaves it `false`.
 - **UI bound to 127.0.0.1** in `docker-compose.yml`, like every other port. Over
   plain HTTP the UI only works at localhost anyway.
 - **`.env` is not committed.** It holds the admin password; `.env.example` is the
@@ -69,15 +72,10 @@ stored data source credential.
 
 ## Data sources
 
-| Source | What | From |
-| --- | --- | --- |
-| `NM_RAN` | Radio access network: sites, outages, 4G/5G KPIs, Ookla | nm-data-platform TimescaleDB, schema `ran` |
-| `NM_STUDIES` | Weekly capacity studies | nm-data-platform TimescaleDB, schema `studies` |
-| `NY_TAXI`, `TPCDS_DB` | Bundled samples | Zetaris's public S3 bucket |
-
-[datasources/nm-data-platform.sql](datasources/nm-data-platform.sql) records how
-NM_RAN and NM_STUDIES were registered, through a read-only database role, so the
-setup can be rebuilt. It holds no passwords.
+BantAI's data is loaded into `itoolbox-data-platform`'s TimescaleDB first, governed
+there, and registered here one Postgres schema per data source, through a read-only
+database role. Each registration is recorded under `datasources/`, without
+passwords, so the setup can be rebuilt.
 
 ## How itoolbox-backend connects
 

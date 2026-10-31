@@ -79,7 +79,7 @@ for svc in init bootstrap; do
     state=$(docker inspect -f '{{.State.Status}}' "$cid" 2>/dev/null)
     if [ "$state" = "running" ]; then
         bad "${svc}: still running (it is a one-shot job and should have finished)"
-                [ "$svc" = "bootstrap" ] && hint "on a slow machine this takes several minutes -- it loads the sample data"
+                [ "$svc" = "bootstrap" ] && hint "it checks the admin login; with ZETARIS_SEED_SAMPLE_DATA=true it also loads the sample data, which takes minutes"
     elif [ "$code" = "0" ]; then
         ok "${svc}: completed (exit 0 -- this is correct for a one-shot job)"
     else

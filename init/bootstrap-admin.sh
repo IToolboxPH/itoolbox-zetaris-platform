@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Register the sample data, once. The organisation and administrator already exist: the
+# Check the administrator can log in, then register the sample data once if
+# ZETARIS_SEED_SAMPLE_DATA=true. The organisation and administrator already exist: the
 # driver registers them on first start, from the same ZETARIS_ADMIN_* settings.
 #
 # Runs in the driver image because that is where seed-org.sh lives.
@@ -53,7 +54,10 @@ already_exists() { grep -qaiE "already exist|already registered|duplicate" "$1";
 # datasets (NY_TAXI and TPCDS_DB, pointer tables over s3a://zetaris-public-dataset) and the same
 # instructions work on both. Needs outbound internet to S3. Never fatal: a seeding problem must
 # not make a working install look failed.
-if [ -f "$MARK_SAMPLE_DATA" ]; then
+# IToolbox registers its own sources and leaves the samples out unless .env asks for them.
+if [ "${ZETARIS_SEED_SAMPLE_DATA:-false}" != true ]; then
+    log "sample data not requested (ZETARIS_SEED_SAMPLE_DATA=${ZETARIS_SEED_SAMPLE_DATA:-false}); skipping"
+elif [ -f "$MARK_SAMPLE_DATA" ]; then
     log "sample data already registered on a previous start; skipping"
 else
     log "registering the sample datasets NY_TAXI and TPCDS_DB"

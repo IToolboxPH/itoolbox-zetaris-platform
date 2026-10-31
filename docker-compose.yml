@@ -260,7 +260,8 @@ services:
       start_period: 30s
 
   # ---------------------------------------------------------------------------
-  # One-shot: the sample data, registered as the administrator.
+  # One-shot: checks the administrator can log in, and registers the sample data as the
+  # administrator when ZETARIS_SEED_SAMPLE_DATA=true.
   bootstrap:
     image: ${DRIVER_IMAGE}
     container_name: zetaris-bootstrap
@@ -278,6 +279,7 @@ services:
       ENCRYPTION_LOCAL_PUBLIC_KEY_PATH: /home/zetaris/zetaris-ndp-driver/data/passwordkeys/public_key.der
       ZETARIS_ADMIN_EMAIL: ${ZETARIS_ADMIN_EMAIL:-admin@zetaris.com}
       ZETARIS_ADMIN_PASSWORD: ${ZETARIS_ADMIN_PASSWORD:?ZETARIS_ADMIN_PASSWORD must be set}
+      ZETARIS_SEED_SAMPLE_DATA: ${ZETARIS_SEED_SAMPLE_DATA:-false}
       # Must match the driver: the seed runs a Lightning session against the same storage.
       FILESYSTEM_STAGING: /home/zetaris/customer-data
       NDP_ROOT_PATH: /home/zetaris/customer-data
