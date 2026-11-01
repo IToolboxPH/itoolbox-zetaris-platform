@@ -77,9 +77,13 @@ there, and registered here one Postgres schema per data source, through a read-o
 database role. Each registration is recorded under `datasources/`, without
 passwords, so the setup can be rebuilt.
 
-| Source | What | From |
+| Source | What | From (itoolbox-data-platform) |
 | --- | --- | --- |
-| `WEATHER` | Current weather, 5-day/3-hour forecast and air quality for 24 Philippine cities, loaded hourly from OpenWeather | itoolbox-data-platform, schema `weather` |
+| `WEATHER` | Current weather, 5-day/3-hour forecast and air quality for 24 Philippine cities (OpenWeather, hourly); daily history since 1991 (NASA POWER) | schema `weather` |
+| `BULLETINS` | PAGASA tropical cyclone bulletins, wind signals and rainfall advisories, via a self-hosted BagyoAPI | schema `bulletins` |
+| `HAZARDS` | USGS earthquakes since 2000, GDACS alerts since 2015, Project NOAH hazard around each city | schema `hazards` |
+| `TYPHOONS` | IBTrACS storms inside PAR since 1951, their tracks, and each city's closest passes | schema `typhoons` |
+| `REFERENCE` | PSGC places, PSA province population, OpenStreetMap facilities near each city | schema `reference` |
 
 [datasources/itoolbox-data-platform.sql](datasources/itoolbox-data-platform.sql) records
 the registration.
