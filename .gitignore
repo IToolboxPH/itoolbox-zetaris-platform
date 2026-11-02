@@ -6,6 +6,11 @@
 !.env.example
 !.env.server.example
 
+# ── Zetaris's own files ──────────────────────────────────────────────────────
+# The JDBC driver is Zetaris software from the bundle. Keep your copy in jdbc/;
+# it stays out of the repo.
+jdbc/*.jar
+
 # ── IDE / OS ─────────────────────────────────────────────────────────────────
 .DS_Store
 .idea/

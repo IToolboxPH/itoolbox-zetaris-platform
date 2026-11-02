@@ -147,7 +147,7 @@ Heap and cores cannot be set in that file. The driver is launched with them on t
 
 ## Connecting over JDBC
 
-The query engine listens on port 10000 on this machine. Tools that speak JDBC -- DBeaver, DataGrip, Tableau, your own Java or Python code -- connect to it through the driver in `jdbc/`.
+The query engine listens on port 10000 on this machine. Tools that speak JDBC -- DBeaver, DataGrip, Tableau, your own Java or Python code -- connect to it through the driver in `jdbc/`. The driver comes with the Zetaris bundle and is not in this repo (git ignores `jdbc/*.jar`); copy it into `jdbc/` from the bundle.
 
 | | |
 |---|---|
