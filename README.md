@@ -33,7 +33,10 @@ docker compose up -d                       # first start: 5-10 minutes
 ```
 
 Then open <http://localhost:3001> and sign in as `admin@zetaris.com`. On Windows, run
-the `.sh` scripts from Git Bash.
+the `.sh` scripts from Git Bash. From another device, use the host's Tailscale link,
+<https://itoolbox.taildc9975.ts.net:3001>; itoolbox-backend's
+[admin guide](https://github.com/IToolboxPH/itoolbox-backend/blob/main/docs/ADMIN_GUIDE.md)
+sets it up.
 
 | Port | Service | Bound to |
 | --- | --- | --- |
@@ -50,12 +53,17 @@ stored data source credential.
 ## Changes from the stock bundle
 
 - **UI on port 3001**, not 3000, which another app on the host already uses.
-  `UI_PORT`, `ALLOWED_ORIGINS` and `GUI_URL` in `.env` must agree.
+  `ALLOWED_ORIGINS` in `.env` lists every address the browser opens it at,
+  separated by semicolons: `http://localhost:3001` and the Tailscale link
+  `https://itoolbox.taildc9975.ts.net:3001`. The browser's origin check fails at any
+  other. `GUI_URL` only starts the links in password-reset emails.
 - **No sample data.** The bootstrap job registers the bundle's `NY_TAXI` and
   `TPCDS_DB` samples only when `ZETARIS_SEED_SAMPLE_DATA=true` in `.env`; IToolbox
   leaves it `false`.
 - **UI bound to 127.0.0.1** in `docker-compose.yml`, like every other port. Over
-  plain HTTP the UI only works at localhost anyway.
+  plain HTTP the UI only works at localhost anyway. Other devices reach it through
+  Tailscale Serve on the host, whose HTTPS certificate gives the UI the secure
+  context it needs.
 - **`.env` is not committed.** It holds the admin password; `.env.example` is the
   same file without it.
 - **Compose project `itoolbox_zetaris-platform`**, so Docker Desktop lists it with
